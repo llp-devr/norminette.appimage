@@ -24,9 +24,8 @@ jobs:
     - name: Build AppImage
       run: ./appimage-builder-x86_64.AppImage --recipe AppImageBuilder.yaml --skip-test
         
-    - name: Upload AppImage to release
+    - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files: "*.AppImage"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        files: '*.AppImage'
+        token: ${{ github.token }}
