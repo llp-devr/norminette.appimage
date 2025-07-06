@@ -9,7 +9,6 @@ AppDir:
   app_info:
     id: com.github.42school.norminette
     name: Norminette
-    icon: norminette
     version: "3.3.59"
     exec: usr/bin/python3
     exec_args: -m norminette \$@
