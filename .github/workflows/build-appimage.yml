@@ -11,25 +11,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Install appimage-builder
+    - name: Download appimage-builder
       run: |
-        sudo apt update
-        sudo apt install -y python3-pip python3-setuptools patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace
-        pip install appimage-builder
-        
-    - name: Extract version from release tag
-      id: version
-      run: |
-        VERSION=${GITHUB_REF#refs/tags/v}
-        echo "version=$VERSION" >> $GITHUB_OUTPUT
-  
+        wget -O appimage-builder-x86_64.AppImage https://github.com/AppImageCrafters/appimage-builder/releases/download/v1.1.0/appimage-builder-1.1.0-x86_64.AppImage
+        chmod +x appimage-builder-x86_64.AppImage
+    
     - name: Build AppImage
-      run: appimage-builder --recipe AppImageBuilder.yaml --skip-test
+      run: ./appimage-builder-x86_64.AppImage --recipe AppImageBuilder.yml --skip-test
         
     - name: Upload AppImage to release
       uses: softprops/action-gh-release@v1
