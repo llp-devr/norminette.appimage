@@ -16,25 +16,20 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: Install python-appimage
+    - name: Install appimage-builder
       run: |
-        pip install python-appimage
-      
+        sudo apt update
+        sudo apt install -y python3-pip python3-setuptools patchelf desktop-file-utils libgdk-pixbuf2.0-dev fakeroot strace
+        pip install appimage-builder
+        
     - name: Extract version from release tag
       id: version
       run: |
         VERSION=${GITHUB_REF#refs/tags/v}
         echo "version=$VERSION" >> $GITHUB_OUTPUT
-        echo "Building norminette version: $VERSION"
-        
-    - name: Build Norminette AppImage
-      run: |
-        python-appimage build app \
-          --python-version 3.11 \
-          --name "Norminette" \
-          --app-version "${{ steps.version.outputs.version }}" \
-          --icon-path ./icon.png \
-          norminette==${{ steps.version.outputs.version }}
+  
+    - name: Build AppImage
+      run: appimage-builder --recipe AppImageBuilder.yaml --skip-test
         
     - name: Upload AppImage to release
       uses: softprops/action-gh-release@v1
