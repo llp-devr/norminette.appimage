@@ -22,7 +22,7 @@ jobs:
         chmod +x appimage-builder-x86_64.AppImage
 
     - name: Build AppImage
-      run: ./appimage-builder-x86_64.AppImage --recipe AppImageBuilder.yml --skip-test
+      run: ./appimage-builder-x86_64.AppImage --recipe AppImageBuilder.yaml --skip-test
         
     - name: Upload AppImage to release
       uses: softprops/action-gh-release@v1
