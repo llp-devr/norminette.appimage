@@ -1,8 +1,11 @@
 version: 1
+
 script:
   - pip install norminette==3.3.59
+
 AppDir:
   path: ./AppDir
+  
   app_info:
     id: com.github.42school.norminette
     name: Norminette
@@ -10,5 +13,18 @@ AppDir:
     version: "3.3.59"
     exec: usr/bin/python3
     exec_args: -m norminette \$@
+
+  apt:
+    arch: amd64
+    sources:
+      - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse'
+        key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3b4fe6acc0b21f32'
+  
+    include:
+      - python3
+    exclude: []
+
 AppImage:
   arch: x86_64
+  sign-key: None
+  update-information: None
