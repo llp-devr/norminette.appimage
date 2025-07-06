@@ -1,0 +1,44 @@
+name: Build Norminette AppImage
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install python-appimage
+      run: |
+        pip install python-appimage
+      
+    - name: Extract version from release tag
+      id: version
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Building norminette version: $VERSION"
+        
+    - name: Build Norminette AppImage
+      run: |
+        python-appimage build app \
+          --python-version 3.11 \
+          --name "Norminette" \
+          --app-version "${{ steps.version.outputs.version }}" \
+          --icon-path ./icon.png \
+          norminette==${{ steps.version.outputs.version }}
+        
+    - name: Upload AppImage to release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: "*.AppImage"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
